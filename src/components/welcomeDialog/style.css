@@ -1,0 +1,9 @@
+.operation {
+  color: #0a70b4;
+  cursor: pointer;
+}
+
+.content {
+  margin-left: 300px;
+  width: 100vw;
+}

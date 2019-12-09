@@ -1,5 +1,5 @@
 import React from 'react';
-import './ToolBar.css';
+import './style.css';
 
 const ToolBar: React.FC = () => {
   const createTable = () => {
@@ -7,7 +7,7 @@ const ToolBar: React.FC = () => {
   };
 
   const createRelation = () => {
-
+    
   };
 
   return (

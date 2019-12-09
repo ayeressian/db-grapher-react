@@ -1,7 +1,7 @@
 import React from 'react';
 import Menu, { SubMenu, MenuItem } from 'rc-menu';
 import 'rc-menu/assets/index.css';
-import './TopMenu.css';
+import './style.css';
 
 const TopMenu: React.FC = () => {
   return (

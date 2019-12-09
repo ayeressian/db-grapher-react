@@ -21,9 +21,9 @@
 }
 
 .left_toolbar .action.create_table {
-  background-image: url(./icon_create_table_48x48.png);
+  background-image: url(./asset/icon_create_table_48x48.png);
 }
 
 .left_toolbar .action.create_relation {
-  background-image: url(./icon_create_relation_48x48.png);
+  background-image: url(./asset/icon_create_relation_48x48.png);
 }
