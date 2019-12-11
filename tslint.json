@@ -1,0 +1,15 @@
+{
+  "defaultSeverity": "error",
+  "extends": ["tslint:latest", "tslint-react"],
+  "jsRules": {
+  },
+  "rules": {
+    "quotemark": {
+      "options": "single"
+    },
+    "curly": {
+      "options": "ignore-same-line" 
+    }
+  },
+  "rulesDirectory": []
+}

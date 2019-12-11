@@ -1,10 +1,10 @@
 import React from 'react';
-import TopMenu from '../top-menu';
+import DbViewer from '../dbViewer/dbViewer';
+import FileInputs from '../fileInputs/fileInputs';
+import ToolBar from '../toolBar/toolBar';
+import TopMenu from '../topMenu/topMenu';
+import WelcomeDialog from '../welcomeDialog/welcomeDialog';
 import './style.css';
-import ToolBar from '../tool-bar';
-import WelcomeDialog from '../welcomeDialog';
-import FileInputs from '../fileInputs';
-import DbViewer from '../dbViewer';
 
 const App: React.FC = () => {
   return (
@@ -18,6 +18,6 @@ const App: React.FC = () => {
       <FileInputs/>
     </>
   );
-}
+};
 
 export default App;

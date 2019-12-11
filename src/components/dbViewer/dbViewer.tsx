@@ -1,9 +1,9 @@
-import React, { useRef } from 'react';
-import './style.css';
 import 'db-viewer-component';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
-import { action as welcomeDialogAction } from '../../store/welcomeDialog';
+import { action as welcomeDialogAction } from '../../store/slices/welcomeDialog';
+import './style.css';
 
 const DbViewer: React.FC = ({ children }) => {
   const dispatch = useDispatch();
@@ -13,10 +13,10 @@ const DbViewer: React.FC = ({ children }) => {
     dbViewer.current.schema = schema;
     dispatch(welcomeDialogAction.close());
   }
-  
+
   return (
-    <db-viewer ref={ dbViewer }/>
-  );  
+    <db-viewer ref={dbViewer}/>
+  );
 };
 
 export default DbViewer;

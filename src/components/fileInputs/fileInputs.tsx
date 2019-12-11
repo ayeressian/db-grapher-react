@@ -1,8 +1,8 @@
-import React, { useRef, ChangeEvent } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { ChangeEvent, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
-import { validateJson } from './validateSchema';
 import { action as schemaAction } from '../../store/schema';
+import { validateJson } from './validateSchema';
 
 const INVALID_JSON_MSG = 'Selected file doesn\'t contain valid JSON.';
 const INVALID_FILE_FORMAT = 'Selected file doesn\'t have correct Db designer file format';
@@ -43,11 +43,28 @@ const FileInputs: React.FC = () => {
       dispatch(schemaAction.setSchema(schema));
     };
   };
-  
+
+  const importSqlFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    // this.chooseDbDialog.getDbType().then((dbType) => {
+    //   if (dbType == null) {
+    //     this.dialog.open();
+    //     return;
+    //   }
+    //   setupDbScehmaFileOpen(dbSchemaFileOpen, setSchema, () => Promise.resolve(dbType));
+    //   dbSchemaFileOpen.click();
+    // });
+  };
+
   return (
     <>
-      <input type="file" id="file_open" style={{ display: 'none' }} accept="application/json" ref={fileOpenElem} onChange={fileOpenChange}/>
-      <input type="file" id="db_schema_file_open" style={{ display: 'none' }} ref={fileSqlOpenElem}/>
+      <input
+        type='file'
+        style={{ display: 'none' }}
+        accept='application/json'
+        ref={fileOpenElem}
+        onChange={fileOpenChange}
+      />
+      <input type='file' style={{ display: 'none' }} ref={fileSqlOpenElem} onChange={importSqlFileChange}/>
     </>
   );
 };

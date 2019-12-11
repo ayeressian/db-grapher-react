@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import { reducer as fileOpenDialogReducer } from './fileOpenDialogSlice';
-import { reducer as fileSqlOpenDialogReducer } from './fileSqlOpenDialogSlice';
-import { reducer as welcomeDialogReducer } from './welcomeDialog';
 import { reducer as schemaReducer } from './schema';
+import { reducer as fileOpenDialogReducer } from './slices/fileOpenDialogSlice';
+import { reducer as fileSqlOpenDialogReducer } from './slices/fileSqlOpenDialogSlice';
+import { reducer as welcomeDialogReducer } from './slices/welcomeDialog';
 
 const rootReducer = combineReducers({
   dialog: combineReducers({

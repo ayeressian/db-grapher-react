@@ -4,8 +4,8 @@ const slice = createSlice({
   name: 'schema',
   initialState: null,
   reducers: {
-    setSchema: (state, { payload }) => payload,
-  }
+    setSchema: (_, { payload }) => payload,
+  },
 });
 
 export default slice;
