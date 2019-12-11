@@ -4,7 +4,7 @@ const slice = createSlice({
   name: 'schema',
   initialState: null,
   reducers: {
-    setSchema: schema => schema,
+    setSchema: (state, { payload }) => payload,
   }
 });
 

@@ -40,7 +40,7 @@ const FileInputs: React.FC = () => {
         alert(INVALID_FILE_FORMAT);
         return;
       }
-      dispatch(schemaAction.setSchema());
+      dispatch(schemaAction.setSchema(schema));
     };
   };
   
