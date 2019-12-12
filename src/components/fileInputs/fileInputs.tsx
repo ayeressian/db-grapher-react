@@ -27,10 +27,10 @@ const FileInputs: React.FC = () => {
     const reader = new FileReader();
     const target = event.target;
     reader.readAsText(target.files![0]);
-    reader.onload = (event) => {
+    reader.onload = (readerEvent) => {
       let schema;
       try {
-        schema = JSON.parse(event.target!.result as string);
+        schema = JSON.parse(readerEvent.target!.result as string);
       } catch (e) {
         alert(INVALID_JSON_MSG);
         return;

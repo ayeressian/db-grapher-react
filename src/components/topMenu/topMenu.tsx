@@ -1,4 +1,5 @@
 import Menu, { MenuItem, SubMenu } from 'rc-menu';
+// tslint:disable-next-line: no-submodule-imports
 import 'rc-menu/assets/index.css';
 import React from 'react';
 import './style.css';
