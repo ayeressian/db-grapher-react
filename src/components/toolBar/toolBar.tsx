@@ -1,9 +1,12 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { actions as tableDialogAction } from '../../store/slices/createDialog';
 import './style.css';
 
 const ToolBar: React.FC = () => {
+  const dispatch = useDispatch();
   const createTable = () => {
-    // TODO
+    dispatch(tableDialogAction.open());
   };
 
   const createRelation = () => {

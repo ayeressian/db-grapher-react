@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
-import { action as schemaAction } from '../../store/schema';
+import { actions as schemaAction } from '../../store/slices/schema';
 import { validateJson } from './validateSchema';
 
 const INVALID_JSON_MSG = 'Selected file doesn\'t contain valid JSON.';

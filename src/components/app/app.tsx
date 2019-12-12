@@ -1,6 +1,7 @@
 import React from 'react';
 import DbViewer from '../dbViewer/dbViewer';
 import FileInputs from '../fileInputs/fileInputs';
+import TableDialog from '../tableDialog/tableDialog';
 import ToolBar from '../toolBar/toolBar';
 import TopMenu from '../topMenu/topMenu';
 import WelcomeDialog from '../welcomeDialog/welcomeDialog';
@@ -14,6 +15,7 @@ const App: React.FC = () => {
         <ToolBar/>
         <DbViewer/>
         <WelcomeDialog/>
+        <TableDialog/>
       </div>
       <FileInputs/>
     </>

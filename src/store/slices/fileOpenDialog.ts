@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const slice = createSlice({
-  initialState: true,
-  name: 'welcomeDialog',
+  initialState: false,
+  name: 'fileOpenDialog',
   reducers: {
     close: () => false,
     open: () => true,

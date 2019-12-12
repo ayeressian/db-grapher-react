@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const slice = createSlice({
-  name: 'schema',
   initialState: null,
+  name: 'schema',
   reducers: {
     setSchema: (_, { payload }) => payload,
   },
@@ -11,4 +11,4 @@ const slice = createSlice({
 export default slice;
 
 export const reducer = slice.reducer;
-export const action = slice.actions;
+export const actions = slice.actions;

@@ -2,7 +2,7 @@ import 'db-viewer-component';
 import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
-import { action as welcomeDialogAction } from '../../store/slices/welcomeDialog';
+import { actions as welcomeDialogAction } from '../../store/slices/welcomeDialog';
 import './style.css';
 
 const DbViewer: React.FC = ({ children }) => {

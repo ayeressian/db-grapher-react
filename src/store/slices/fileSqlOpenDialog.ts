@@ -1,15 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const slice = createSlice({
-  name: 'fileOpenDialogSlice',
   initialState: false,
+  name: 'fileSqlOpenDialog',
   reducers: {
+    close: () => false,
     open: () => true,
-    close: () => false
-  }
+  },
 });
 
 export default slice;
 
 export const reducer = slice.reducer;
-export const action = slice.actions;
+export const actions = slice.actions;

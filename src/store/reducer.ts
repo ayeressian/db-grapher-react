@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
-import { reducer as schemaReducer } from './schema';
-import { reducer as fileOpenDialogReducer } from './slices/fileOpenDialogSlice';
-import { reducer as fileSqlOpenDialogReducer } from './slices/fileSqlOpenDialogSlice';
+import { reducer as fileOpenDialogReducer } from './slices/fileOpenDialog';
+import { reducer as fileSqlOpenDialogReducer } from './slices/fileSqlOpenDialog';
+import { reducer as schemaReducer } from './slices/schema';
+import { reducer as tableDialogReducer } from './slices/createDialog';
 import { reducer as welcomeDialogReducer } from './slices/welcomeDialog';
 
 const rootReducer = combineReducers({
@@ -10,6 +11,7 @@ const rootReducer = combineReducers({
       fileOpenDialog: fileOpenDialogReducer,
       fileSqlOpenDialog: fileSqlOpenDialogReducer,
     }),
+    tableDialog: tableDialogReducer,
     welcomeDialog: welcomeDialogReducer,
   }),
   schema: schemaReducer,
