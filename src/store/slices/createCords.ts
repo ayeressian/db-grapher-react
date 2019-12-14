@@ -1,20 +1,16 @@
-import { createSlice, PayloadAction, CaseReducer } from '@reduxjs/toolkit';
-import { AppState } from '../reducer';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface IPoint {
   x: number;
   y: number;
 }
-
-type IPointNullable = IPoint | null | void;
-const setCord: CaseReducer<IPointNullable, PayloadAction<IPointNullable>> =
-  (state, action) => action!.payload;
+type IPointNullable = IPoint | null;
 
 const slice = createSlice({
-  initialState: null,
+  initialState: null as IPointNullable,
   name: 'createCord',
   reducers: {
-    setCord,
+    setCord: (_, action: PayloadAction<IPoint>) => action.payload,
   },
 });
 

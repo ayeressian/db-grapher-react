@@ -1,5 +1,5 @@
 export enum IDbViewerMode {
   Create,
   Relation,
-  None
+  None,
 }
