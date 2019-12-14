@@ -1,20 +1,22 @@
 import { combineReducers } from 'redux';
-import { reducer as fileOpenDialogReducer } from './slices/fileOpenDialog';
-import { reducer as fileSqlOpenDialogReducer } from './slices/fileSqlOpenDialog';
-import { reducer as schemaReducer } from './slices/schema';
-import { reducer as tableDialogReducer } from './slices/createDialog';
-import { reducer as welcomeDialogReducer } from './slices/welcomeDialog';
+import { reducer as tableDialog } from './slices/createDialog';
+import { reducer as dbViewerMode } from './slices/dbViewerMode';
+import { reducer as fileOpenDialog } from './slices/fileOpenDialog';
+import { reducer as fileSqlOpenDialog } from './slices/fileSqlOpenDialog';
+import { reducer as schema } from './slices/schema';
+import { reducer as welcomeDialog } from './slices/welcomeDialog';
 
 const rootReducer = combineReducers({
+  dbViewerMode,
   dialog: combineReducers({
     fileDialog: combineReducers({
-      fileOpenDialog: fileOpenDialogReducer,
-      fileSqlOpenDialog: fileSqlOpenDialogReducer,
+      fileOpenDialog,
+      fileSqlOpenDialog,
     }),
-    tableDialog: tableDialogReducer,
-    welcomeDialog: welcomeDialogReducer,
+    tableDialog,
+    welcomeDialog,
   }),
-  schema: schemaReducer,
+  schema,
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

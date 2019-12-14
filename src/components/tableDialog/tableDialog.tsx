@@ -1,13 +1,21 @@
 import React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
+import { actions as tableDialogAction } from '../../store/slices/createDialog';
 import Dialog from '../dialog/dialog';
 
 const TableDialog: React.FC = () => {
+  const dispatch = useDispatch();
   const create = useSelector((store: AppState) => store.dialog.tableDialog, shallowEqual);
   if (!create) return null;
 
   const title = create ? 'Create Table' : 'Edit Table';
+  const saveLabel = create ? 'Create' : 'Save';
+
+  const cancel = () => {
+    dispatch(tableDialogAction.close());
+  };
+
   return (
     <Dialog>
       <h3>{title}</h3>
@@ -54,8 +62,8 @@ const TableDialog: React.FC = () => {
         <button>Add relation</button>
         <div className='errors'/>
         <menu>
-          <button type='button'>Cancel</button>
-          <button/>
+          <button onClick={cancel}>Cancel</button>
+          <button>{saveLabel}</button>
         </menu>
       </form>
     </Dialog>
