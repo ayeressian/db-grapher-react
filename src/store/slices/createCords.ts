@@ -10,7 +10,7 @@ const slice = createSlice({
   initialState: null as IPointNullable,
   name: 'createCord',
   reducers: {
-    setCord: (_, action: PayloadAction<IPoint>) => action.payload,
+    setCord: (_, action: PayloadAction<IPointNullable>) => action.payload,
   },
 });
 
