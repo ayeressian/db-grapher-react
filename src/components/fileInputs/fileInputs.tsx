@@ -64,7 +64,7 @@ const FileInputs: React.FC = () => {
         ref={fileOpenElem}
         onChange={fileOpenChange}
       />
-      <input type='file' style={{ display: 'none' }} ref={fileSqlOpenElem} onChange={importSqlFileChange}/>
+      <input type='file' style={{ display: 'none' }} ref={fileSqlOpenElem} onChange={importSqlFileChange} />
     </>
   );
 };

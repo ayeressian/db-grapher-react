@@ -36,7 +36,7 @@ const DbViewer: React.FC = () => {
     dispatch(welcomeDialogAction.close());
   }
   return (
-    <db-viewer ref={dbViewer}/>
+    <db-viewer ref={dbViewer} />
   );
 };
 

@@ -91,7 +91,7 @@ const TableDialog: React.FC = () => {
     });
   };
 
-  const addRelation = () => {};
+  const addRelation = () => { };
 
   const onColumnNameChange = (index: number) => (
     event: ChangeEvent<HTMLInputElement>,

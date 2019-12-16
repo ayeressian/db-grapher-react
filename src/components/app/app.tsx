@@ -11,13 +11,13 @@ const App: React.FC = () => {
   return (
     <>
       <div className='main_container'>
-        <TopMenu/>
-        <ToolBar/>
-        <DbViewer/>
-        <WelcomeDialog/>
-        <TableDialog/>
+        <TopMenu />
+        <ToolBar />
+        <DbViewer />
+        <WelcomeDialog />
+        <TableDialog />
       </div>
-      <FileInputs/>
+      <FileInputs />
     </>
   );
 };
