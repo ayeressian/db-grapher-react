@@ -7,36 +7,30 @@ type callback = (
 
 interface IProps {
   fkColumns: IColumn[];
-  onFkColumnNameChange: callback;
-  onFkPkChange: callback;
-  onFkUqChange: callback;
-  onFkNnChange: callback;
+  register: any;
   addFkColumn:
-    | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
-    | undefined;
+  | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
+  | undefined;
 }
 
 const FkColumns: React.FC<IProps> = ({
   fkColumns,
-  onFkColumnNameChange,
-  onFkPkChange,
-  onFkUqChange,
-  onFkNnChange,
   addFkColumn,
+  register,
 }) => {
   const columnsJsx = fkColumns.map(({ name, pk, uq, nn }, index) => (
     <tr key={index}>
       <td>
-        <input value={name} onChange={onFkColumnNameChange(index)} />
+        <input value={name} />
       </td>
       <td>
-        <input type='checkbox' checked={pk} onChange={onFkPkChange(index)} />
+        <input type='checkbox' checked={pk} />
       </td>
       <td>
-        <input type='checkbox' checked={uq} onChange={onFkUqChange(index)} />
+        <input type='checkbox' checked={uq} />
       </td>
       <td>
-        <input type='checkbox' checked={nn} onChange={onFkNnChange(index)} />
+        <input type='checkbox' checked={nn} />
       </td>
     </tr>
   ));

@@ -1,4 +1,5 @@
 import React, { ChangeEvent, MouseEvent as ReactMouseEvent } from 'react';
+import useForm from 'react-hook-form';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useImmer } from 'use-immer';
 import { AppState } from '../../store/reducer';
@@ -24,6 +25,7 @@ interface ITableWithFk extends ITable {
 }
 
 const TableDialog: React.FC = () => {
+  const { register } = useForm<ITableWithFk>();
   const [table, updateTable] = useImmer<ITableWithFk>({
     columns: [],
     columnsFk: [],
@@ -79,99 +81,20 @@ const TableDialog: React.FC = () => {
     event.preventDefault();
     updateTable((draft) => {
       draft.columnsFk.push({
+        fk: {
+          column: '',
+          table: '',
+        },
         name: '',
         nn: false,
         pk: false,
-        fk: {
-          table: '',
-          column: '',
-        },
         uq: false,
       });
     });
   };
 
-  const addRelation = () => { };
-
-  const onColumnNameChange = (index: number) => (
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
-    const value = event.target.value;
-    updateTable((draft) => {
-      draft.columns[index].name = value;
-    });
-  };
-
-  const onTypeChange = (index: number) => (
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
-    const value = event.target.value;
-    updateTable((draft) => {
-      draft.columns[index].type = value;
-    });
-  };
-
-  const onPkChange = (index: number) => (
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
-    const checked = event.target.checked;
-    updateTable((draft) => {
-      draft.columns[index].pk = checked;
-    });
-  };
-
-  const onUqChange = (index: number) => (
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
-    const checked = event.target.checked;
-    updateTable((draft) => {
-      draft.columns[index].uq = checked;
-    });
-  };
-
-  const onNnChange = (index: number) => (
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
-    const checked = event.target.checked;
-    updateTable((draft) => {
-      draft.columns[index].nn = checked;
-    });
-  };
-
-  const onFkColumnNameChange = (index: number) => (
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
-    const value = event.target.value;
-    updateTable((draft) => {
-      draft.columnsFk[index].name = value;
-    });
-  };
-
-  const onFkPkChange = (index: number) => (
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
-    const checked = event.target.checked;
-    updateTable((draft) => {
-      draft.columnsFk[index].pk = checked;
-    });
-  };
-
-  const onFkUqChange = (index: number) => (
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
-    const checked = event.target.checked;
-    updateTable((draft) => {
-      draft.columnsFk[index].uq = checked;
-    });
-  };
-
-  const onFkNnChange = (index: number) => (
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
-    const checked = event.target.checked;
-    updateTable((draft) => {
-      draft.columnsFk[index].nn = checked;
-    });
+  const addRelation = () => {
+    // TODO
   };
 
   return (
@@ -182,10 +105,12 @@ const TableDialog: React.FC = () => {
           <label>
             Name:
             <input
+              name='name'
               type='text'
               required={true}
               value={table.name}
               onChange={onChangeTableName}
+              ref={register}
             />
           </label>
         </div>
@@ -193,21 +118,14 @@ const TableDialog: React.FC = () => {
           {...{
             addColumn,
             columns: table.columns,
-            onColumnNameChange,
-            onNnChange,
-            onPkChange,
-            onTypeChange,
-            onUqChange,
+            register,
           }}
         />
         <FkColumns
           {...{
             addFkColumn,
             fkColumns: table.columnsFk,
-            onFkColumnNameChange,
-            onFkNnChange,
-            onFkPkChange,
-            onFkUqChange,
+            register,
           }}
         />
         <div className='errors' />
