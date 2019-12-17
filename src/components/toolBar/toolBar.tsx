@@ -16,12 +16,16 @@ const ToolBar: React.FC = () => {
   return (
     <ul className='left_toolbar'>
       <li
-        className={`action create_table ${mode === IDbViewerMode.Create ? 'active' : ''}`}
+        className={`action create_table ${
+          mode === IDbViewerMode.Create ? 'active' : ''
+        }`}
         title='Create Table'
         onClick={createTable}
       />
       <li
-        className={`action create_relation ${mode === IDbViewerMode.Relation ? 'active' : ''}`}
+        className={`action create_relation ${
+          mode === IDbViewerMode.Relation ? 'active' : ''
+        }`}
         title='Create Relation'
         onClick={createRelation}
       />

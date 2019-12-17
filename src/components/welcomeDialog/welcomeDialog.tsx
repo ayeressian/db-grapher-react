@@ -8,7 +8,10 @@ import Dialog from '../dialog/dialog';
 import './style.css';
 
 const WelcomeDialog: React.FC = () => {
-  const open = useSelector((store: AppState) => store.dialog.welcomeDialog, shallowEqual);
+  const open = useSelector(
+    (store: AppState) => store.dialog.welcomeDialog,
+    shallowEqual,
+  );
   const dispatch = useDispatch();
 
   if (!open) return null;
@@ -28,9 +31,15 @@ const WelcomeDialog: React.FC = () => {
   return (
     <Dialog>
       <div className='content'>
-        <h4 className='operation' onClick={newFile}>New File</h4>
-        <h4 className='operation' onClick={openFile}>Open File</h4>
-        <h4 className='operation' onClick={openSqlFile}>Import SQL File</h4>
+        <h4 className='operation' onClick={newFile}>
+          New File
+        </h4>
+        <h4 className='operation' onClick={openFile}>
+          Open File
+        </h4>
+        <h4 className='operation' onClick={openSqlFile}>
+          Import SQL File
+        </h4>
       </div>
     </Dialog>
   );

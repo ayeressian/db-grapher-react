@@ -13,8 +13,8 @@ interface IProps {
   onUqChange: callback;
   onNnChange: callback;
   addColumn:
-  | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
-  | undefined;
+    | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
+    | undefined;
 }
 
 const Columns: React.FC<IProps> = ({

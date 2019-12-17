@@ -79,19 +79,21 @@ const TableDialog: React.FC = () => {
     event.preventDefault();
     updateTable((draft) => {
       draft.columnsFk.push({
+        fk: {
+          column: '',
+          table: '',
+        },
         name: '',
         nn: false,
         pk: false,
-        fk: {
-          table: '',
-          column: '',
-        },
         uq: false,
       });
     });
   };
 
-  const addRelation = () => { };
+  const addRelation = () => {
+    // TODO
+  };
 
   const onColumnNameChange = (index: number) => (
     event: ChangeEvent<HTMLInputElement>,
