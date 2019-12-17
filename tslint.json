@@ -11,7 +11,7 @@
       "options": "ignore-same-line" 
     },
     "react-hooks-nesting": "error",
-    "prettier": true
+    "prettier": [true, ".prettierrc.json"]
   },
   "rulesDirectory": ["tslint-plugin-prettier"]
 }
