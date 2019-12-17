@@ -25,7 +25,7 @@ interface ITableWithFk extends ITable {
 }
 
 const TableDialog: React.FC = () => {
-  const { register } = useForm<ITableWithFk>();
+  const { register, handleSubmit, watch } = useForm<ITableWithFk>();
   const [table, updateTable] = useImmer<ITableWithFk>({
     columns: [],
     columnsFk: [],
@@ -37,6 +37,7 @@ const TableDialog: React.FC = () => {
     (store: AppState) => store.dialog.tableDialog,
     shallowEqual,
   );
+
   if (!create) return null;
 
   const title = create ? 'Create Table' : 'Edit Table';
@@ -53,13 +54,6 @@ const TableDialog: React.FC = () => {
 
   const save = () => {
     end();
-  };
-
-  const onChangeTableName = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    updateTable((draft) => {
-      draft.name = value;
-    });
   };
 
   const addColumn = (event: ReactMouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -97,10 +91,20 @@ const TableDialog: React.FC = () => {
     // TODO
   };
 
+  const onChangeTableName = () => {
+    // TODO
+  };
+
+  const onSubmit = (data: ITableWithFk) => {
+    console.log(data);
+  };
+
+  const name = watch('name');
+  console.log(name);
   return (
     <Dialog>
       <h3>{title}</h3>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label>
             Name:
@@ -108,9 +112,8 @@ const TableDialog: React.FC = () => {
               name='name'
               type='text'
               required={true}
-              value={table.name}
               onChange={onChangeTableName}
-              ref={register}
+              ref={register({ required: true })}
             />
           </label>
         </div>
@@ -121,17 +124,18 @@ const TableDialog: React.FC = () => {
             register,
           }}
         />
-        {/* <FkColumns
+        <FkColumns
           {...{
             addFkColumn,
             fkColumns: table.columnsFk,
             register,
           }}
-        /> */}
+        />
         <div className='errors' />
         <menu>
           <button onClick={cancel}>Cancel</button>
           <button onClick={save}>{saveLabel}</button>
+          <input type='submit' />
         </menu>
       </form>
     </Dialog>

@@ -9,28 +9,39 @@ interface IProps {
   fkColumns: IColumn[];
   register: any;
   addFkColumn:
-  | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
-  | undefined;
+    | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
+    | undefined;
 }
 
-const FkColumns: React.FC<IProps> = ({
-  fkColumns,
-  addFkColumn,
-  register,
-}) => {
-  const columnsJsx = fkColumns.map(({ name, pk, uq, nn }, index) => (
+const FkColumns: React.FC<IProps> = ({ fkColumns, addFkColumn, register }) => {
+  const columnsJsx = fkColumns.map((_, index) => (
     <tr key={index}>
       <td>
-        <input value={name} />
+        <input
+          name={`columns[${index}].name`}
+          ref={register({ required: true })}
+        />
       </td>
       <td>
-        <input type='checkbox' checked={pk} />
+        <input name={`columnsFk[${index}].pk`} type='checkbox' ref={register} />
       </td>
       <td>
-        <input type='checkbox' checked={uq} />
+        <input name={`columnsFk[${index}].uq`} type='checkbox' ref={register} />
       </td>
       <td>
-        <input type='checkbox' checked={nn} />
+        <input name={`columnsFk[${index}].nn`} type='checkbox' ref={register} />
+      </td>
+      <td>
+        <select
+          name={`columnsFk[${index}].fk.table`}
+          ref={register({ required: true })}
+        />
+      </td>
+      <td>
+        <select
+          name={`columnsFk[${index}].fk.column`}
+          ref={register({ required: true })}
+        />
       </td>
     </tr>
   ));
