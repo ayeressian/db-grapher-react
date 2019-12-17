@@ -13,27 +13,23 @@ interface IProps {
     | undefined;
 }
 
-const Columns: React.FC<IProps> = ({
-  columns,
-  register,
-  addColumn,
-}) => {
+const Columns: React.FC<IProps> = ({ columns, register, addColumn }) => {
   const columnsJsx = columns.map(({ name, type, pk, uq, nn }, index) => (
     <tr key={index}>
       <td>
-        <input value={name} />
+        <input name={`name${index}`} ref={register} />
       </td>
       <td>
-        <input value={type} />
+        <input name={`type${index}`} ref={register} />
       </td>
       <td>
-        <input type='checkbox' checked={pk} />
+        <input name={`pk${index}`} type='checkbox' ref={register} />
       </td>
       <td>
-        <input type='checkbox' checked={uq} />
+        <input name={`uq${index}`} type='checkbox' ref={register} />
       </td>
       <td>
-        <input type='checkbox' checked={nn} />
+        <input name={`nn${index}`} type='checkbox' ref={register} />
       </td>
     </tr>
   ));

@@ -121,13 +121,13 @@ const TableDialog: React.FC = () => {
             register,
           }}
         />
-        <FkColumns
+        {/* <FkColumns
           {...{
             addFkColumn,
             fkColumns: table.columnsFk,
             register,
           }}
-        />
+        /> */}
         <div className='errors' />
         <menu>
           <button onClick={cancel}>Cancel</button>
