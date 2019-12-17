@@ -9,8 +9,8 @@ interface IProps {
   columns: IColumn[];
   register: any;
   addColumn:
-  | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
-  | undefined;
+    | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
+    | undefined;
 }
 
 const Columns: React.FC<IProps> = ({

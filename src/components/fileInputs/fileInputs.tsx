@@ -4,15 +4,20 @@ import { AppState } from '../../store/reducer';
 import { actions as schemaAction } from '../../store/slices/schema';
 import { validateJson } from './validateSchema';
 
-const INVALID_JSON_MSG = 'Selected file doesn\'t contain valid JSON.';
-const INVALID_FILE_FORMAT = 'Selected file doesn\'t have correct Db designer file format';
+const INVALID_JSON_MSG = 'Selected file does not contain valid JSON.';
+const INVALID_FILE_FORMAT =
+  'Selected file does not have correct Db designer file format';
 
 const FileInputs: React.FC = () => {
   const fileOpenElem = useRef<HTMLInputElement>(null);
   const fileSqlOpenElem = useRef<HTMLInputElement>(null);
 
-  const openFile = useSelector((state: AppState) => state.dialog.fileDialog.fileOpenDialog);
-  const openSqlFile = useSelector((state: AppState) => state.dialog.fileDialog.fileSqlOpenDialog);
+  const openFile = useSelector(
+    (state: AppState) => state.dialog.fileDialog.fileOpenDialog,
+  );
+  const openSqlFile = useSelector(
+    (state: AppState) => state.dialog.fileDialog.fileSqlOpenDialog,
+  );
   if (openFile) {
     fileOpenElem.current!.click();
   }
@@ -64,7 +69,12 @@ const FileInputs: React.FC = () => {
         ref={fileOpenElem}
         onChange={fileOpenChange}
       />
-      <input type='file' style={{ display: 'none' }} ref={fileSqlOpenElem} onChange={importSqlFileChange} />
+      <input
+        type='file'
+        style={{ display: 'none' }}
+        ref={fileSqlOpenElem}
+        onChange={importSqlFileChange}
+      />
     </>
   );
 };

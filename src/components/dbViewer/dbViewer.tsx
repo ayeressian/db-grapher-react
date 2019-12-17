@@ -35,9 +35,7 @@ const DbViewer: React.FC = () => {
     dbViewer.current!.schema = schema;
     dispatch(welcomeDialogAction.close());
   }
-  return (
-    <db-viewer ref={dbViewer} />
-  );
+  return <db-viewer ref={dbViewer} />;
 };
 
 export default DbViewer;
