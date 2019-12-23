@@ -1,9 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface IPoint {
-  x: number;
-  y: number;
-}
 type IPointNullable = IPoint | null;
 
 const slice = createSlice({

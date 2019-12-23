@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { IColumn } from './IColumn';
 
 type callback = (
@@ -11,9 +11,30 @@ interface IProps {
   addFkColumn:
     | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
     | undefined;
+  tables: ITableSchema[];
 }
 
-const FkColumns: React.FC<IProps> = ({ fkColumns, addFkColumn, register }) => {
+const FkColumns: React.FC<IProps> = ({
+  fkColumns,
+  addFkColumn,
+  register,
+  tables = [],
+}) => {
+  const [columns, setColumns] = useState<IColumnSchema[]>([]);
+
+  useEffect(() => {
+    if (tables.length > 0) {
+      setColumns(tables[0].columns);
+    }
+  }, [tables]);
+
+  const tableSelect = (event: ChangeEvent<HTMLSelectElement>) => {
+    const selectedTableName = event.target.value;
+    const table = tables.find(
+      (tableItem) => tableItem.name === selectedTableName,
+    );
+    setColumns(table!.columns);
+  };
   const columnsJsx = fkColumns.map((_, index) => (
     <tr key={index}>
       <td>
@@ -35,13 +56,22 @@ const FkColumns: React.FC<IProps> = ({ fkColumns, addFkColumn, register }) => {
         <select
           name={`columnsFk[${index}].fk.table`}
           ref={register({ required: true })}
-        />
+          onChange={tableSelect}
+        >
+          {tables.map(({ name }) => (
+            <option key={name}>{name}</option>
+          ))}
+        </select>
       </td>
       <td>
         <select
           name={`columnsFk[${index}].fk.column`}
           ref={register({ required: true })}
-        />
+        >
+          {columns.map(({ name }) => (
+            <option key={name}>{name}</option>
+          ))}
+        </select>
       </td>
     </tr>
   ));

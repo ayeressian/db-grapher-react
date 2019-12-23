@@ -1,10 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const slice = createSlice({
-  initialState: null,
+  initialState: {
+    tables: [] as ITableSchema[],
+  },
   name: 'schema',
   reducers: {
-    setSchema: (_, { payload }) => payload,
+    setSchema: (_, action: PayloadAction<ISchema>) => action.payload,
   },
 });
 

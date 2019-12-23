@@ -1,4 +1,4 @@
-import React, { ChangeEvent, MouseEvent as ReactMouseEvent } from 'react';
+import React, { MouseEvent as ReactMouseEvent } from 'react';
 import useForm from 'react-hook-form';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useImmer } from 'use-immer';
@@ -35,6 +35,11 @@ const TableDialog: React.FC = () => {
   const dispatch = useDispatch();
   const create = useSelector(
     (store: AppState) => store.dialog.tableDialog,
+    shallowEqual,
+  );
+
+  const tables = useSelector(
+    (store: AppState) => store.schema.tables,
     shallowEqual,
   );
 
@@ -111,7 +116,6 @@ const TableDialog: React.FC = () => {
             <input
               name='name'
               type='text'
-              required={true}
               onChange={onChangeTableName}
               ref={register({ required: true })}
             />
@@ -129,6 +133,7 @@ const TableDialog: React.FC = () => {
             addFkColumn,
             fkColumns: table.columnsFk,
             register,
+            tables,
           }}
         />
         <div className='errors' />

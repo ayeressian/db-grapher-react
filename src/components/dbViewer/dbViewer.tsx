@@ -1,5 +1,5 @@
 import 'db-viewer-component';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
 import { actions as createCordsAction } from '../../store/slices/createCords';
@@ -8,11 +8,7 @@ import { IDbViewerMode } from '../../store/slices/IDbViewerMode';
 import { actions as welcomeDialogAction } from '../../store/slices/welcomeDialog';
 import './style.css';
 
-interface IDbViewer extends HTMLElement {
-  schema: object;
-}
-
-const DbViewer: React.FC = () => {
+const DbViewerComponent: React.FC = () => {
   const dispatch = useDispatch();
   const schema = useSelector((state: AppState) => state.schema);
   const dbViewerMode = useSelector((state: AppState) => state.dbViewerMode);
@@ -31,11 +27,15 @@ const DbViewer: React.FC = () => {
     case IDbViewerMode.Relation:
       break;
   }
-  if (schema != null) {
-    dbViewer.current!.schema = schema;
-    dispatch(welcomeDialogAction.close());
-  }
+
+  useEffect(() => {
+    if (schema != null) {
+      dbViewer.current!.schema = schema;
+      dispatch(welcomeDialogAction.close());
+    }
+  }, [schema]);
+
   return <db-viewer ref={dbViewer} />;
 };
 
-export default DbViewer;
+export default DbViewerComponent;
