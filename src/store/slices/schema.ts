@@ -1,9 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const slice = createSlice({
-  initialState: {
-    tables: [] as ITableSchema[],
-  },
+  initialState: null as ISchema | null,
   name: 'schema',
   reducers: {
     setSchema: (_, action: PayloadAction<ISchema>) => action.payload,

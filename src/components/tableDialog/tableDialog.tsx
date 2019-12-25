@@ -1,4 +1,4 @@
-import React, { MouseEvent as ReactMouseEvent } from 'react';
+import React, { MouseEvent as ReactMouseEvent, useState } from 'react';
 import useForm from 'react-hook-form';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useImmer } from 'use-immer';
@@ -24,6 +24,8 @@ interface ITableWithFk extends ITable {
   columnsFk: IColumn[];
 }
 
+const EMPTY_TABLE_NAME = '<CURRENT_TABLE>';
+
 const TableDialog: React.FC = () => {
   const { register, handleSubmit, watch } = useForm<ITableWithFk>();
   const [table, updateTable] = useImmer<ITableWithFk>({
@@ -38,10 +40,16 @@ const TableDialog: React.FC = () => {
     shallowEqual,
   );
 
-  const tables = useSelector(
-    (store: AppState) => store.schema.tables,
+  const storeTables = useSelector(
+    (store: AppState) => store.schema?.tables ?? [],
     shallowEqual,
   );
+
+  const [oldName, setOldName] = useState(EMPTY_TABLE_NAME);
+  const [tables, setTables] = useImmer([
+    ...storeTables,
+    { name: oldName, columns: [] },
+  ]);
 
   if (!create) return null;
 
@@ -104,8 +112,17 @@ const TableDialog: React.FC = () => {
     console.log(data);
   };
 
-  const name = watch('name');
-  console.log(name);
+  let name = watch('name');
+  if (name !== oldName) {
+    setTables((tablesDraft) => {
+      const currentTable = tablesDraft.find(
+        (tableItem) => tableItem.name === oldName,
+      )!;
+      name = !name ? EMPTY_TABLE_NAME : name;
+      currentTable.name = name;
+    });
+    setOldName(name);
+  }
   return (
     <Dialog>
       <h3>{title}</h3>
@@ -117,7 +134,12 @@ const TableDialog: React.FC = () => {
               name='name'
               type='text'
               onChange={onChangeTableName}
-              ref={register({ required: true })}
+              ref={register({
+                required: true,
+                validate: (value) =>
+                  tables.findIndex((tableItem) => tableItem.name === value) ===
+                  -1,
+              })}
             />
           </label>
         </div>
