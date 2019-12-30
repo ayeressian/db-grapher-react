@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { IColumn } from './IColumn';
+import { IColumn } from '../IColumn';
 
 type callback = (
   arg0: number,
