@@ -3,7 +3,7 @@ import React, {
   MouseEvent as ReactMouseEvent,
   useState,
 } from 'react';
-import useForm from 'react-hook-form';
+import { ErrorMessage, useForm } from 'react-hook-form';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useImmer } from 'use-immer';
 import { AppState } from '../../store/reducer';
@@ -136,16 +136,14 @@ const TableDialog: React.FC = () => {
               type='text'
               onChange={onChangeTableName}
               ref={register({
-                required: true,
+                required: 'Name is required',
                 validate: (value: string) =>
                   tables.findIndex((tableItem) => tableItem.name === value) ===
                   -1,
               })}
             />
           </label>
-          <Error
-            message={errors.name?.type === 'required' ? 'Name is required' : ''}
-          />
+          <ErrorMessage errors={errors} name='name' as='p' />
         </div>
         <Columns
           {...{
