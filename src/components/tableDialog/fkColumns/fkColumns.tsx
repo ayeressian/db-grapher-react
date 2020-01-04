@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { IColumn } from '../IColumn';
+import { IColumn } from '../types';
+import useTableStyles from '../useCommonTableStyle';
 
 type callback = (
   arg0: number,
@@ -20,6 +21,7 @@ const FkColumns: React.FC<IProps> = ({
   register,
   tables = [],
 }) => {
+  const tableStyle = useTableStyles().table;
   const [columns, setColumns] = useState<IColumnSchema[]>([]);
 
   useEffect(() => {
@@ -78,7 +80,7 @@ const FkColumns: React.FC<IProps> = ({
 
   return (
     <>
-      <table>
+      <table className={tableStyle}>
         <thead>
           <tr>
             <th>Foreign Key Columns</th>

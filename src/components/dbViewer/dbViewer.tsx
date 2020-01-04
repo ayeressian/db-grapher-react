@@ -1,14 +1,24 @@
 import 'db-viewer-component';
 import React, { useEffect, useRef } from 'react';
+import { createUseStyles } from 'react-jss';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
 import { actions as createCordsAction } from '../../store/slices/createCords';
 import { actions as tableDialogAction } from '../../store/slices/createDialog';
 import { IDbViewerMode } from '../../store/slices/IDbViewerMode';
 import { actions as welcomeDialogAction } from '../../store/slices/welcomeDialog';
-import './style.css';
+
+const useStyle = createUseStyles({
+  dbViewer: {
+    gridRow: 2,
+    overflow: 'auto',
+    width: '100%',
+    height: '100%',
+  },
+});
 
 const DbViewerComponent: React.FC = () => {
+  const classes = useStyle();
   const dispatch = useDispatch();
   const schema = useSelector((state: AppState) => state.schema);
   const dbViewerMode = useSelector((state: AppState) => state.dbViewerMode);
@@ -33,9 +43,9 @@ const DbViewerComponent: React.FC = () => {
       dbViewer.current!.schema = schema;
       dispatch(welcomeDialogAction.close());
     }
-  }, [schema]);
+  }, [dispatch, schema]);
 
-  return <db-viewer ref={dbViewer} />;
+  return <db-viewer ref={dbViewer} className={classes.dbViewer} />;
 };
 
 export default DbViewerComponent;

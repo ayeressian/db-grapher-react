@@ -1,5 +1,6 @@
 import React from 'react';
-import { IColumn } from '../IColumn';
+import { IColumn } from '../types';
+import useTableStyles from '../useCommonTableStyle';
 
 type callback = (
   arg0: number,
@@ -14,6 +15,7 @@ interface IProps {
 }
 
 const Columns: React.FC<IProps> = ({ columns, register, addColumn }) => {
+  const tableStyle = useTableStyles().table;
   const columnsJsx = columns.map((_, index) => (
     <tr key={index}>
       <td>
@@ -42,7 +44,7 @@ const Columns: React.FC<IProps> = ({ columns, register, addColumn }) => {
 
   return (
     <>
-      <table>
+      <table className={tableStyle}>
         <thead>
           <tr>
             <th>Columns</th>

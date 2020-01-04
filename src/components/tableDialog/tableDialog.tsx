@@ -4,6 +4,7 @@ import React, {
   useState,
 } from 'react';
 import { ErrorMessage, useForm } from 'react-hook-form';
+import { createUseStyles } from 'react-jss';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useImmer } from 'use-immer';
 import { AppState } from '../../store/reducer';
@@ -11,27 +12,28 @@ import { actions as tableDialogActions } from '../../store/slices/createDialog';
 import { actions as dbViewerModeActions } from '../../store/slices/dbViewerMode';
 import Dialog from '../dialog/dialog';
 import Columns from './columns/columns';
-import Error from './error/error';
+// import Error from './error/error';
 import FkColumns from './fkColumns/fkColumns';
-import { IColumn } from './IColumn';
-
-export interface IFk {
-  table: string;
-  column: string;
-}
-
-interface ITable {
-  columns: IColumn[];
-  name: string;
-}
-
-interface ITableWithFk extends ITable {
-  columnsFk: IColumn[];
-}
+import { ITableWithFk } from './types';
 
 const EMPTY_TABLE_NAME = '<CURRENT_TABLE>';
 
+const useStyles = createUseStyles({
+  error: {
+    color: '#cc0000',
+  },
+  menu: {
+    display: 'flex',
+    justifyContent: 'center',
+    paddingleft: 0,
+    '& button:not(:first-child)': {
+      marginLeft: '10px',
+    },
+  },
+});
+
 const TableDialog: React.FC = () => {
+  const classes = useStyles();
   const { register, handleSubmit, errors } = useForm<ITableWithFk>();
   const [table, updateTable] = useImmer<ITableWithFk>({
     columns: [],
@@ -143,7 +145,11 @@ const TableDialog: React.FC = () => {
               })}
             />
           </label>
-          <ErrorMessage errors={errors} name='name' as='p' />
+          <ErrorMessage
+            errors={errors}
+            name='name'
+            as={<div className={classes.error} />}
+          />
         </div>
         <Columns
           {...{
@@ -161,7 +167,7 @@ const TableDialog: React.FC = () => {
           }}
         />
         <div className='errors' />
-        <menu>
+        <menu className={classes.menu}>
           <button onClick={cancel}>Cancel</button>
           <button onClick={save}>{saveLabel}</button>
           <input type='submit' />

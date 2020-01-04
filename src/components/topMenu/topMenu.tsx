@@ -2,11 +2,21 @@ import Menu, { MenuItem, SubMenu } from 'rc-menu';
 // tslint:disable-next-line: no-submodule-imports
 import 'rc-menu/assets/index.css';
 import React from 'react';
-import './style.css';
+import { createUseStyles } from 'react-jss';
+
+const useStyles = createUseStyles({
+  rcMenuRoot: {
+    marginTop: 0,
+    gridRow: 1,
+    gridColumnStart: 1,
+    gridColumnEnd: 3,
+  },
+});
 
 const TopMenu: React.FC = () => {
+  const classes = useStyles();
   return (
-    <Menu mode='horizontal'>
+    <Menu mode='horizontal' className={classes.rcMenuRoot}>
       <SubMenu
         title={<span className='submenu-title-wrapper'>File</span>}
         key='1'
