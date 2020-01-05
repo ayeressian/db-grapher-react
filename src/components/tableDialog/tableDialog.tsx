@@ -1,18 +1,18 @@
 import React, {
   ChangeEvent,
   MouseEvent as ReactMouseEvent,
+  useEffect,
   useState,
 } from 'react';
 import { ErrorMessage, useForm } from 'react-hook-form';
 import { createUseStyles } from 'react-jss';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useImmer } from 'use-immer';
 import { AppState } from '../../store/reducer';
 import { actions as tableDialogActions } from '../../store/slices/createDialog';
 import { actions as dbViewerModeActions } from '../../store/slices/dbViewerMode';
 import Dialog from '../dialog/dialog';
 import Columns from './columns/columns';
-// import Error from './error/error';
 import FkColumns from './fkColumns/fkColumns';
 import { ITableWithFk } from './types';
 
@@ -42,21 +42,17 @@ const TableDialog: React.FC = () => {
   });
 
   const dispatch = useDispatch();
-  const create = useSelector(
-    (store: AppState) => store.dialog.tableDialog,
-    shallowEqual,
-  );
-
-  const storeTables = useSelector(
-    (store: AppState) => store.schema?.tables ?? [],
-    shallowEqual,
-  );
+  const create = useSelector((store: AppState) => store.dialog.tableDialog);
 
   const [oldName, setOldName] = useState(EMPTY_TABLE_NAME);
-  const [tables, setTables] = useImmer([
-    ...storeTables,
-    { name: oldName, columns: [] },
-  ]);
+
+  const storeTables = useSelector((store: AppState) => store.schema?.tables);
+
+  const [tables, setTables] = useImmer<ITableSchema[]>([]);
+
+  useEffect(() => {
+    setTables(() => [...(storeTables || []), { name: oldName, columns: [] }]);
+  }, [oldName, setTables, storeTables]);
 
   if (!create) return null;
 
@@ -93,7 +89,7 @@ const TableDialog: React.FC = () => {
     event: ReactMouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.preventDefault();
-    updateTable((draft) => {
+    updateTable((draft: ITableWithFk) => {
       draft.columnsFk.push({
         fk: {
           column: '',

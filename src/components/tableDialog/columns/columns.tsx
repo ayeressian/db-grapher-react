@@ -2,10 +2,6 @@ import React from 'react';
 import { IColumn } from '../types';
 import useTableStyles from '../useCommonTableStyle';
 
-type callback = (
-  arg0: number,
-) => ((event: React.ChangeEvent<HTMLInputElement>) => void) | undefined;
-
 interface IProps {
   columns: IColumn[];
   register: any;
@@ -16,7 +12,7 @@ interface IProps {
 
 const Columns: React.FC<IProps> = ({ columns, register, addColumn }) => {
   const tableStyle = useTableStyles().table;
-  const columnsJsx = columns.map((_, index) => (
+  const columnsTemplate = columns.map((_, index) => (
     <tr key={index}>
       <td>
         <input
@@ -58,7 +54,7 @@ const Columns: React.FC<IProps> = ({ columns, register, addColumn }) => {
             <th />
           </tr>
         </thead>
-        <tbody>{columnsJsx}</tbody>
+        <tbody>{columnsTemplate}</tbody>
       </table>
       <button onClick={addColumn}>Add column</button>
     </>

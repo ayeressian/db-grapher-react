@@ -2,10 +2,6 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { IColumn } from '../types';
 import useTableStyles from '../useCommonTableStyle';
 
-type callback = (
-  arg0: number,
-) => ((event: React.ChangeEvent<HTMLInputElement>) => void) | undefined;
-
 interface IProps {
   fkColumns: IColumn[];
   register: any;
@@ -23,7 +19,6 @@ const FkColumns: React.FC<IProps> = ({
 }) => {
   const tableStyle = useTableStyles().table;
   const [columns, setColumns] = useState<IColumnSchema[]>([]);
-
   useEffect(() => {
     if (tables.length > 0) {
       setColumns(tables[0].columns);
@@ -32,12 +27,13 @@ const FkColumns: React.FC<IProps> = ({
 
   const tableSelect = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedTableName = event.target.value;
+    debugger;
     const table = tables.find(
       (tableItem) => tableItem.name === selectedTableName,
     );
-    setColumns(table!.columns);
+    setColumns(table!.columns.filter((column) => column.fk || column.pk));
   };
-  const columnsJsx = fkColumns.map((_, index) => (
+  const columnsTemplate = fkColumns.map((_, index) => (
     <tr key={index}>
       <td>
         <input
@@ -94,7 +90,7 @@ const FkColumns: React.FC<IProps> = ({
             <th>Foreign Column</th>
           </tr>
         </thead>
-        <tbody>{columnsJsx}</tbody>
+        <tbody>{columnsTemplate}</tbody>
       </table>
       <button onClick={addFkColumn}>Add relation</button>
     </>

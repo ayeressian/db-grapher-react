@@ -4,7 +4,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
 import { actions as fileOpenAction } from '../../store/slices/fileOpenDialog';
 import { actions as fileSqlOpenAction } from '../../store/slices/fileSqlOpenDialog';
-import { actions as schemAction } from '../../store/slices/schema';
+import { actions as schemaAction } from '../../store/slices/schema';
 import { actions as welcomeDialogActions } from '../../store/slices/welcomeDialog';
 import Dialog from '../dialog/dialog';
 
@@ -38,7 +38,7 @@ const WelcomeDialog: React.FC = () => {
   };
 
   const newFile = () => {
-    dispatch(schemAction.setSchema({ tables: [] }));
+    dispatch(schemaAction.setSchema({ tables: [] }));
     dispatch(welcomeDialogActions.close());
   };
 
