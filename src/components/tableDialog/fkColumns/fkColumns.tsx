@@ -1,9 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { IColumn } from '../types';
 import useTableStyles from '../useCommonTableStyle';
 
 interface IProps {
-  fkColumns: IColumn[];
   register: any;
   addFkColumn:
     | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
@@ -12,67 +10,88 @@ interface IProps {
 }
 
 const FkColumns: React.FC<IProps> = ({
-  fkColumns,
   addFkColumn,
   register,
   tables = [],
 }) => {
   const tableStyle = useTableStyles().table;
-  const [columns, setColumns] = useState<IColumnSchema[]>([]);
+  const currentTable = tables[tables.length - 1];
+  const [refColumns, setRefColumns] = useState<IColumnSchema[]>([]);
   useEffect(() => {
     if (tables.length > 0) {
-      setColumns(tables[0].columns);
+      setRefColumns(tables[0].columns);
     }
   }, [tables]);
 
   const tableSelect = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedTableName = event.target.value;
-    debugger;
     const table = tables.find(
       (tableItem) => tableItem.name === selectedTableName,
     );
-    setColumns(table!.columns.filter((column) => column.fk || column.pk));
+    setRefColumns(table!.columns.filter((column) => column.uq || column.pk));
   };
-  const columnsTemplate = fkColumns.map((_, index) => (
-    <tr key={index}>
-      <td>
-        <input
-          name={`columns[${index}].name`}
-          ref={register({ required: true })}
-        />
-      </td>
-      <td>
-        <input name={`columnsFk[${index}].pk`} type='checkbox' ref={register} />
-      </td>
-      <td>
-        <input name={`columnsFk[${index}].uq`} type='checkbox' ref={register} />
-      </td>
-      <td>
-        <input name={`columnsFk[${index}].nn`} type='checkbox' ref={register} />
-      </td>
-      <td>
-        <select
-          name={`columnsFk[${index}].fk.table`}
-          ref={register({ required: true })}
-          onChange={tableSelect}
-        >
-          {tables.map(({ name }) => (
-            <option key={name}>{name}</option>
-          ))}
-        </select>
-      </td>
-      <td>
-        <select
-          name={`columnsFk[${index}].fk.column`}
-          ref={register({ required: true })}
-        >
-          {columns.map(({ name }) => (
-            <option key={name}>{name}</option>
-          ))}
-        </select>
-      </td>
-    </tr>
-  ));
+
+  const columnsTemplate = currentTable.columns.reduce<JSX.Element[]>(
+    (acc, column, index) => {
+      if (column.pk || column.uq) {
+        const template = (
+          <tr key={index}>
+            <td>
+              <input
+                name={`columns[${index}].name`}
+                ref={register({ required: true })}
+              />
+            </td>
+            <td>
+              <input
+                name={`columnsFk[${index}].pk`}
+                type='checkbox'
+                ref={register}
+              />
+            </td>
+            <td>
+              <input
+                name={`columnsFk[${index}].uq`}
+                type='checkbox'
+                ref={register}
+              />
+            </td>
+            <td>
+              <input
+                name={`columnsFk[${index}].nn`}
+                type='checkbox'
+                ref={register}
+              />
+            </td>
+            <td>
+              <select
+                name={`columnsFk[${index}].fk.table`}
+                ref={register({ required: true })}
+                onChange={tableSelect}
+              >
+                {tables.map(({ name }) => (
+                  <option key={name}>{name}</option>
+                ))}
+              </select>
+            </td>
+            <td>
+              <select
+                name={`columnsFk[${index}].fk.column`}
+                ref={register({ required: true })}
+              >
+                {refColumns.map(({ name }) => (
+                  <option key={name}>{name}</option>
+                ))}
+              </select>
+            </td>
+          </tr>
+        );
+        acc.push(template);
+      }
+      return acc;
+    },
+    [],
+  );
 
   return (
     <>

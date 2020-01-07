@@ -1,17 +1,18 @@
 import React from 'react';
-import { IColumn } from '../types';
 import useTableStyles from '../useCommonTableStyle';
 
 interface IProps {
-  columns: IColumn[];
   register: any;
   addColumn:
     | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
     | undefined;
+  tables: ITableSchema[];
 }
 
-const Columns: React.FC<IProps> = ({ columns, register, addColumn }) => {
+const Columns: React.FC<IProps> = ({ register, addColumn, tables }) => {
   const tableStyle = useTableStyles().table;
+  const currentTable = tables[tables.length - 1];
+  const columnsTemplate = currentTable.columns.reduce<JSX.Element[]>();
   const columnsTemplate = columns.map((_, index) => (
     <tr key={index}>
       <td>
