@@ -12,32 +12,52 @@ interface IProps {
 const Columns: React.FC<IProps> = ({ register, addColumn, tables }) => {
   const tableStyle = useTableStyles().table;
   const currentTable = tables[tables.length - 1];
-  const columnsTemplate = currentTable.columns.reduce<JSX.Element[]>();
-  const columnsTemplate = columns.map((_, index) => (
-    <tr key={index}>
-      <td>
-        <input
-          name={`columns[${index}].name`}
-          ref={register({ required: true })}
-        />
-      </td>
-      <td>
-        <input
-          name={`columns[${index}].type`}
-          ref={register({ required: true })}
-        />
-      </td>
-      <td>
-        <input name={`columns[${index}].pk`} type='checkbox' ref={register} />
-      </td>
-      <td>
-        <input name={`columns[${index}].uq`} type='checkbox' ref={register} />
-      </td>
-      <td>
-        <input name={`columns[${index}].nn`} type='checkbox' ref={register} />
-      </td>
-    </tr>
-  ));
+  const columnsTemplate = currentTable.columns.reduce<JSX.Element[]>(
+    (acc, column, index) => {
+      if ((column as IColumnFkSchema).fk == null) {
+        const template = (
+          <tr key={index}>
+            <td>
+              <input
+                name={`columns[${index}].name`}
+                ref={register({ required: true })}
+              />
+            </td>
+            <td>
+              <input
+                name={`columns[${index}].type`}
+                ref={register({ required: true })}
+              />
+            </td>
+            <td>
+              <input
+                name={`columns[${index}].pk`}
+                type='checkbox'
+                ref={register}
+              />
+            </td>
+            <td>
+              <input
+                name={`columns[${index}].uq`}
+                type='checkbox'
+                ref={register}
+              />
+            </td>
+            <td>
+              <input
+                name={`columns[${index}].nn`}
+                type='checkbox'
+                ref={register}
+              />
+            </td>
+          </tr>
+        );
+        acc.push(template);
+      }
+      return acc;
+    },
+    [],
+  );
 
   return (
     <>

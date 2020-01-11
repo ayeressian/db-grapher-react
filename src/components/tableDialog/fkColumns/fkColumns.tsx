@@ -33,7 +33,7 @@ const FkColumns: React.FC<IProps> = ({
 
   const columnsTemplate = currentTable.columns.reduce<JSX.Element[]>(
     (acc, column, index) => {
-      if (column.pk || column.uq) {
+      if ((column as IColumnFkSchema).fk != null) {
         const template = (
           <tr key={index}>
             <td>

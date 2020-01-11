@@ -13,7 +13,6 @@ import { actions as dbViewerModeActions } from '../../store/slices/dbViewerMode'
 import Dialog from '../dialog/dialog';
 import Columns from './columns/columns';
 import FkColumns from './fkColumns/fkColumns';
-import { ITableWithFk } from './types';
 
 const EMPTY_TABLE_NAME = '<CURRENT_TABLE>';
 
@@ -37,8 +36,6 @@ const TableDialog: React.FC = () => {
 
   const dispatch = useDispatch();
   const create = useSelector((store: AppState) => store.dialog.tableDialog);
-
-  // const [oldName, setOldName] = useState(EMPTY_TABLE_NAME);
 
   const storeTables = useSelector((store: AppState) => store.schema?.tables);
 
@@ -99,26 +96,21 @@ const TableDialog: React.FC = () => {
     });
   };
 
-  const addRelation = () => {
-    // TODO
-  };
-
-  const getCurrentTable = (tablesTmp = tables) => tablesTmp[tablesTmp.length - 1];
+  const getCurrentTable = (tablesTmp = tables) =>
+    tablesTmp[tablesTmp.length - 1];
 
   const onChangeTableName = (event: ChangeEvent<HTMLInputElement>) => {
     const newName = event.target.value;
     setTables((tablesDraft) => {
-      // const currentTable = tablesDraft.find((tableItem) =>
-      //   tableItem.name === oldName ? oldName : EMPTY_TABLE_NAME,
-      // )!;
-      const currentTable = getCurrentTable();
       const formattedNewName = newName ? newName : EMPTY_TABLE_NAME;
-      currentTable.name = formattedNewName;
-      // setOldName(newName);
+      setTables((draft) => {
+        const currentTable = getCurrentTable(draft);
+        currentTable.name = formattedNewName;
+      });
     });
   };
 
-  const onSubmit = (data: ITableWithFk) => {
+  const onSubmit = (data: ITableSchema) => {
     console.log(data);
   };
 
@@ -150,8 +142,8 @@ const TableDialog: React.FC = () => {
         <Columns
           {...{
             addColumn,
-            columns: getCurrentTable().columns,
             register,
+            tables,
           }}
         />
         <FkColumns
