@@ -13,6 +13,7 @@ import { actions as dbViewerModeActions } from '../../store/slices/dbViewerMode'
 import Dialog from '../dialog/dialog';
 import Columns from './columns/columns';
 import FkColumns from './fkColumns/fkColumns';
+import { ColAtrs } from './ColAttrs';
 
 const EMPTY_TABLE_NAME = '<CURRENT_TABLE>';
 
@@ -114,6 +115,10 @@ const TableDialog: React.FC = () => {
     console.log(data);
   };
 
+  const onColChange = (attr: ColAtrs, value: boolean | string) => {
+
+  };
+
   return (
     <Dialog>
       <h3>{title}</h3>
@@ -144,6 +149,7 @@ const TableDialog: React.FC = () => {
             addColumn,
             register,
             tables,
+            onColChange,
           }}
         />
         <FkColumns
@@ -151,6 +157,7 @@ const TableDialog: React.FC = () => {
             addFkColumn,
             register,
             tables,
+            onColChange,
           }}
         />
         <div className='errors' />
