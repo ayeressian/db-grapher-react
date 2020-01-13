@@ -8,7 +8,7 @@ interface IProps {
     | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
     | undefined;
   tables: ITableSchema[];
-  onColChange: (attr: ColAtrs, value: string) => void;
+  onColChange: (attr: ColAtrs, value: string, colIndex: number) => void;
 }
 
 const Columns: React.FC<IProps> = ({
@@ -19,9 +19,10 @@ const Columns: React.FC<IProps> = ({
 }) => {
   const tableStyle = useTableStyles().table;
   const currentTable = tables[tables.length - 1];
-  const onColChangeLocal = (attr: ColAtrs) => (
+  const onColChangeLocal = (attr: ColAtrs, colIndex: number) => (
     Event: React.FormEvent<HTMLInputElement>,
-  ) => onColChange(attr, Event.currentTarget.value);
+  ) => onColChange(attr, Event.currentTarget.value, colIndex);
+
   const columnsTemplate = currentTable.columns.reduce<JSX.Element[]>(
     (acc, column, index) => {
       if ((column as IColumnFkSchema).fk == null) {
@@ -31,14 +32,14 @@ const Columns: React.FC<IProps> = ({
               <input
                 name={`columns[${index}].name`}
                 ref={register({ required: true })}
-                onChange={onColChangeLocal('name')}
+                onChange={onColChangeLocal('name', index)}
               />
             </td>
             <td>
               <input
                 name={`columns[${index}].type`}
                 ref={register({ required: true })}
-                onChange={onColChangeLocal('type')}
+                onChange={onColChangeLocal('type', index)}
               />
             </td>
             <td>
@@ -46,7 +47,7 @@ const Columns: React.FC<IProps> = ({
                 name={`columns[${index}].pk`}
                 type='checkbox'
                 ref={register}
-                onChange={onColChangeLocal('pk')}
+                onChange={onColChangeLocal('pk', index)}
               />
             </td>
             <td>
@@ -54,7 +55,7 @@ const Columns: React.FC<IProps> = ({
                 name={`columns[${index}].uq`}
                 type='checkbox'
                 ref={register}
-                onChange={onColChangeLocal('uq')}
+                onChange={onColChangeLocal('uq', index)}
               />
             </td>
             <td>
@@ -62,7 +63,7 @@ const Columns: React.FC<IProps> = ({
                 name={`columns[${index}].nn`}
                 type='checkbox'
                 ref={register}
-                onChange={onColChangeLocal('nn')}
+                onChange={onColChangeLocal('nn', index)}
               />
             </td>
           </tr>

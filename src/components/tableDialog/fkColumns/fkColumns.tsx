@@ -8,7 +8,7 @@ interface IProps {
     | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
     | undefined;
   tables: ITableSchema[];
-  onColChange: (attr: ColAtrs, value: string) => void;
+  onColChange: (attr: ColAtrs, value: string, colIndex: number) => void;
 }
 
 const FkColumns: React.FC<IProps> = ({
@@ -26,18 +26,20 @@ const FkColumns: React.FC<IProps> = ({
     }
   }, [tables]);
 
-  const tableSelect = (event: ChangeEvent<HTMLSelectElement>) => {
+  const tableSelect = (colIndex: number) => (
+    event: ChangeEvent<HTMLSelectElement>,
+  ) => {
     const selectedTableName = event.target.value;
     const table = tables.find(
       (tableItem) => tableItem.name === selectedTableName,
     );
     setRefColumns(table!.columns.filter((column) => column.uq || column.pk));
-    onColChange('fkTable', selectedTableName);
+    onColChange('fkTable', selectedTableName, colIndex);
   };
 
-  const onColChangeLocal = (attr: ColAtrs) => (
+  const onColChangeLocal = (attr: ColAtrs, colIndex: number) => (
     Event: React.FormEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>,
-  ) => onColChange(attr, Event.currentTarget.value);
+  ) => onColChange(attr, Event.currentTarget.value, colIndex);
 
   const columnsTemplate = currentTable.columns.reduce<JSX.Element[]>(
     (acc, column, index) => {
@@ -48,7 +50,7 @@ const FkColumns: React.FC<IProps> = ({
               <input
                 name={`columns[${index}].name`}
                 ref={register({ required: true })}
-                onChange={onColChangeLocal('name')}
+                onChange={onColChangeLocal('name', index)}
               />
             </td>
             <td>
@@ -56,7 +58,7 @@ const FkColumns: React.FC<IProps> = ({
                 name={`columnsFk[${index}].pk`}
                 type='checkbox'
                 ref={register}
-                onChange={onColChangeLocal('pk')}
+                onChange={onColChangeLocal('pk', index)}
               />
             </td>
             <td>
@@ -64,7 +66,7 @@ const FkColumns: React.FC<IProps> = ({
                 name={`columnsFk[${index}].uq`}
                 type='checkbox'
                 ref={register}
-                onChange={onColChangeLocal('uq')}
+                onChange={onColChangeLocal('uq', index)}
               />
             </td>
             <td>
@@ -72,14 +74,14 @@ const FkColumns: React.FC<IProps> = ({
                 name={`columnsFk[${index}].nn`}
                 type='checkbox'
                 ref={register}
-                onChange={onColChangeLocal('nn')}
+                onChange={onColChangeLocal('nn', index)}
               />
             </td>
             <td>
               <select
                 name={`columnsFk[${index}].fk.table`}
                 ref={register({ required: true })}
-                onChange={tableSelect}
+                onChange={tableSelect(index)}
               >
                 {tables.map(({ name }) => (
                   <option key={name}>{name}</option>
@@ -90,7 +92,7 @@ const FkColumns: React.FC<IProps> = ({
               <select
                 name={`columnsFk[${index}].fk.column`}
                 ref={register({ required: true })}
-                onChange={onColChangeLocal('fkColumn')}
+                onChange={onColChangeLocal('fkColumn', index)}
               >
                 {refColumns.map(({ name }) => (
                   <option key={name}>{name}</option>

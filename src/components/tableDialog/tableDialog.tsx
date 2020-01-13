@@ -11,9 +11,9 @@ import { AppState } from '../../store/reducer';
 import { actions as tableDialogActions } from '../../store/slices/createDialog';
 import { actions as dbViewerModeActions } from '../../store/slices/dbViewerMode';
 import Dialog from '../dialog/dialog';
+import { ColAtrs } from './ColAttrs';
 import Columns from './columns/columns';
 import FkColumns from './fkColumns/fkColumns';
-import { ColAtrs } from './ColAttrs';
 
 const EMPTY_TABLE_NAME = '<CURRENT_TABLE>';
 
@@ -115,8 +115,29 @@ const TableDialog: React.FC = () => {
     console.log(data);
   };
 
-  const onColChange = (attr: ColAtrs, value: boolean | string) => {
-
+  const onColChange = (attr: ColAtrs, value: string, colIndex: number) => {
+    setTables((draft) => {
+      const column = getCurrentTable(draft)!.columns[colIndex];
+      switch (attr) {
+        case 'fkColumn':
+          (column as IColumnFkSchema).fk!.column = value; 
+          break;
+        case 'fkTable':
+          (column as IColumnFkSchema).fk!.table = value;
+          break;
+        case 'pk':
+        case 'nn':
+        case 'uq':
+          column[attr] = value === 'checked';
+          break;
+        case 'type':
+          (column as IColumnNoneFkSchema)[attr] = value;
+          break;
+        default:
+          column[attr] = value;
+          break;
+      }
+    });
   };
 
   return (
