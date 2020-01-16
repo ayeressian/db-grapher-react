@@ -5,7 +5,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.1.0",
     "ajv": "^6.10.2",
-    "db-viewer-component": "^3.6.6",
+    "db-viewer-component": "^3.7.6",
     "immer": "^5.0.1",
     "pg-query-emscripten": "^0.1.0",
     "rc-menu": "^8.0.0-alpha.5",
