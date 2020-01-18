@@ -11,6 +11,9 @@ interface IProps {
   onColChange: (attr: ColAtrs, value: string, colIndex: number) => void;
 }
 
+const filterPkUq = (table: ITableSchema) =>
+  table.columns.filter((column) => column.uq || column.pk);
+
 const FkColumns: React.FC<IProps> = ({
   addFkColumn,
   register,
@@ -22,7 +25,7 @@ const FkColumns: React.FC<IProps> = ({
   const [refColumns, setRefColumns] = useState<IColumnSchema[]>([]);
   useEffect(() => {
     if (tables.length > 0) {
-      setRefColumns(tables[0].columns);
+      setRefColumns(filterPkUq(tables[0]));
     }
   }, [tables]);
 
@@ -33,7 +36,8 @@ const FkColumns: React.FC<IProps> = ({
     const table = tables.find(
       (tableItem) => tableItem.name === selectedTableName,
     );
-    setRefColumns(table!.columns.filter((column) => column.uq || column.pk));
+    console.log(table);
+    setRefColumns(filterPkUq(table!));
     onColChange('fkTable', selectedTableName, colIndex);
   };
 
@@ -94,8 +98,8 @@ const FkColumns: React.FC<IProps> = ({
                 ref={register({ required: true })}
                 onChange={onColChangeLocal('fkColumn', index)}
               >
-                {refColumns.map(({ name }) => (
-                  <option key={name}>{name}</option>
+                {refColumns.map(({ name }, refColumnIndex) => (
+                  <option key={refColumnIndex}>{name}</option>
                 ))}
               </select>
             </td>
