@@ -43,7 +43,9 @@ const TableDialog: React.FC = () => {
   const [tables, setTables] = useImmer<ITableSchema[]>([]);
 
   useEffect(() => {
-    setTables(() => [...(storeTables || []), { name: '', columns: [] }]);
+    setTables(() =>
+      storeTables?.concat({ name: EMPTY_TABLE_NAME, columns: [] }),
+    );
   }, [setTables, storeTables]);
 
   if (!create) return null;
@@ -102,12 +104,10 @@ const TableDialog: React.FC = () => {
 
   const onChangeTableName = (event: ChangeEvent<HTMLInputElement>) => {
     const newName = event.target.value;
-    setTables((tablesDraft) => {
-      const formattedNewName = newName ? newName : EMPTY_TABLE_NAME;
-      setTables((draft) => {
-        const currentTable = getCurrentTable(draft);
-        currentTable.name = formattedNewName;
-      });
+    const formattedNewName = newName ? newName : EMPTY_TABLE_NAME;
+    setTables((draft) => {
+      const currentTable = getCurrentTable(draft);
+      currentTable.name = formattedNewName;
     });
   };
 
@@ -120,7 +120,7 @@ const TableDialog: React.FC = () => {
       const column = getCurrentTable(draft)!.columns[colIndex];
       switch (attr) {
         case 'fkColumn':
-          (column as IColumnFkSchema).fk!.column = value; 
+          (column as IColumnFkSchema).fk!.column = value;
           break;
         case 'fkTable':
           (column as IColumnFkSchema).fk!.table = value;
