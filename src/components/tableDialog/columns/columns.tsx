@@ -3,25 +3,30 @@ import { ColAtrs } from '../ColAttrs';
 import useTableStyles from '../useCommonTableStyle';
 
 interface IProps {
-  register: any;
   addColumn:
     | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
     | undefined;
   tables: ITableSchema[];
-  onColChange: (attr: ColAtrs, value: string, colIndex: number) => void;
+  onColChange: (
+    attr: ColAtrs,
+    value: string | boolean,
+    colIndex: number,
+  ) => void;
 }
 
-const Columns: React.FC<IProps> = ({
-  register,
-  addColumn,
-  tables,
-  onColChange,
-}) => {
+const Columns: React.FC<IProps> = ({ addColumn, tables, onColChange }) => {
   const tableStyle = useTableStyles().table;
   const currentTable = tables[tables.length - 1];
   const onColChangeLocal = (attr: ColAtrs, colIndex: number) => (
     Event: React.FormEvent<HTMLInputElement>,
-  ) => onColChange(attr, Event.currentTarget.value, colIndex);
+  ) =>
+    onColChange(
+      attr,
+      ['nn', 'pk', 'uq'].indexOf(attr) === -1
+        ? Event.currentTarget.value
+        : (Event.currentTarget as HTMLInputElement).checked,
+      colIndex,
+    );
 
   const columnsTemplate = currentTable.columns.reduce<JSX.Element[]>(
     (acc, column, index) => {
@@ -31,39 +36,39 @@ const Columns: React.FC<IProps> = ({
             <td>
               <input
                 name={`columns[${index}].name`}
-                ref={register({ required: true })}
                 onChange={onColChangeLocal('name', index)}
+                value={column.name}
               />
             </td>
             <td>
               <input
                 name={`columns[${index}].type`}
-                ref={register({ required: true })}
                 onChange={onColChangeLocal('type', index)}
+                value={(column as IColumnNoneFkSchema).type}
               />
             </td>
             <td>
               <input
                 name={`columns[${index}].pk`}
                 type='checkbox'
-                ref={register}
                 onChange={onColChangeLocal('pk', index)}
+                checked={column.pk}
               />
             </td>
             <td>
               <input
                 name={`columns[${index}].uq`}
                 type='checkbox'
-                ref={register}
                 onChange={onColChangeLocal('uq', index)}
+                checked={column.uq}
               />
             </td>
             <td>
               <input
                 name={`columns[${index}].nn`}
                 type='checkbox'
-                ref={register}
                 onChange={onColChangeLocal('nn', index)}
+                checked={column.nn}
               />
             </td>
           </tr>

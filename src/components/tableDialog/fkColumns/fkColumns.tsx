@@ -1,14 +1,17 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent } from 'react';
 import { ColAtrs } from '../ColAttrs';
 import useTableStyles from '../useCommonTableStyle';
 
 interface IProps {
-  register: any;
   addFkColumn:
     | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
     | undefined;
   tables: ITableSchema[];
-  onColChange: (attr: ColAtrs, value: string, colIndex: number) => void;
+  onColChange: (
+    attr: ColAtrs,
+    value: string | boolean,
+    colIndex: number,
+  ) => void;
 }
 
 const filterPkUq = (table: ITableSchema) =>
@@ -16,34 +19,30 @@ const filterPkUq = (table: ITableSchema) =>
 
 const FkColumns: React.FC<IProps> = ({
   addFkColumn,
-  register,
   tables = [],
   onColChange,
 }) => {
   const tableStyle = useTableStyles().table;
   const currentTable = tables[tables.length - 1];
-  const [refColumns, setRefColumns] = useState<IColumnSchema[]>([]);
-  useEffect(() => {
-    if (tables.length > 0) {
-      setRefColumns(filterPkUq(tables[0]));
-    }
-  }, [tables]);
 
-  const tableSelect = (colIndex: number) => (
-    event: ChangeEvent<HTMLSelectElement>,
-  ) => {
-    const selectedTableName = event.target.value;
-    const table = tables.find(
-      (tableItem) => tableItem.name === selectedTableName,
-    );
-    console.log(table);
-    setRefColumns(filterPkUq(table!));
-    onColChange('fkTable', selectedTableName, colIndex);
+  const getRefColumns = (colIndex: number) => {
+    let tableName = (currentTable.columns[colIndex] as IColumnFkSchema).fk!
+      .table;
+    if (tableName === '') tableName = tables[0].name;
+    const selectedTable = tables.find((table) => tableName === table.name);
+    return filterPkUq(selectedTable!);
   };
 
   const onColChangeLocal = (attr: ColAtrs, colIndex: number) => (
     Event: React.FormEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>,
-  ) => onColChange(attr, Event.currentTarget.value, colIndex);
+  ) =>
+    onColChange(
+      attr,
+      ['nn', 'pk', 'uq'].indexOf(attr) === -1
+        ? Event.currentTarget.value
+        : (Event.currentTarget as HTMLInputElement).checked,
+      colIndex,
+    );
 
   const columnsTemplate = currentTable.columns.reduce<JSX.Element[]>(
     (acc, column, index) => {
@@ -53,53 +52,57 @@ const FkColumns: React.FC<IProps> = ({
             <td>
               <input
                 name={`columns[${index}].name`}
-                ref={register({ required: true })}
                 onChange={onColChangeLocal('name', index)}
+                value={column.name}
               />
             </td>
             <td>
               <input
                 name={`columnsFk[${index}].pk`}
                 type='checkbox'
-                ref={register}
                 onChange={onColChangeLocal('pk', index)}
+                checked={column.pk}
               />
             </td>
             <td>
               <input
                 name={`columnsFk[${index}].uq`}
                 type='checkbox'
-                ref={register}
                 onChange={onColChangeLocal('uq', index)}
+                checked={column.uq}
               />
             </td>
             <td>
               <input
                 name={`columnsFk[${index}].nn`}
                 type='checkbox'
-                ref={register}
                 onChange={onColChangeLocal('nn', index)}
+                checked={column.nn}
               />
             </td>
             <td>
               <select
                 name={`columnsFk[${index}].fk.table`}
-                ref={register({ required: true })}
-                onChange={tableSelect(index)}
+                onChange={onColChangeLocal('fkTable', index)}
+                value={(column as IColumnFkSchema).fk!.table}
               >
                 {tables.map(({ name }) => (
-                  <option key={name}>{name}</option>
+                  <option key={name} value={name}>
+                    {name}
+                  </option>
                 ))}
               </select>
             </td>
             <td>
               <select
                 name={`columnsFk[${index}].fk.column`}
-                ref={register({ required: true })}
                 onChange={onColChangeLocal('fkColumn', index)}
+                value={(column as IColumnFkSchema).fk!.column}
               >
-                {refColumns.map(({ name }, refColumnIndex) => (
-                  <option key={refColumnIndex}>{name}</option>
+                {getRefColumns(index).map(({ name }, refColumnIndex) => (
+                  <option key={refColumnIndex} value={name}>
+                    {name}
+                  </option>
                 ))}
               </select>
             </td>

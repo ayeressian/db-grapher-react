@@ -3,7 +3,6 @@ import React, {
   MouseEvent as ReactMouseEvent,
   useEffect,
 } from 'react';
-import { ErrorMessage, useForm } from 'react-hook-form';
 import { createUseStyles } from 'react-jss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useImmer } from 'use-immer';
@@ -33,7 +32,6 @@ const useStyles = createUseStyles({
 
 const TableDialog: React.FC = () => {
   const classes = useStyles();
-  const { register, handleSubmit, errors } = useForm<ITableSchema>();
 
   const dispatch = useDispatch();
   const create = useSelector((store: AppState) => store.dialog.tableDialog);
@@ -115,26 +113,30 @@ const TableDialog: React.FC = () => {
     console.log(data);
   };
 
-  const onColChange = (attr: ColAtrs, value: string, colIndex: number) => {
+  const onColChange = (
+    attr: ColAtrs,
+    value: string | boolean,
+    colIndex: number,
+  ) => {
     setTables((draft) => {
       const column = getCurrentTable(draft)!.columns[colIndex];
       switch (attr) {
+        case 'name':
+          column.name = value as string;
+          break;
         case 'fkColumn':
-          (column as IColumnFkSchema).fk!.column = value;
+          (column as IColumnFkSchema).fk!.column = value as string;
           break;
         case 'fkTable':
-          (column as IColumnFkSchema).fk!.table = value;
+          (column as IColumnFkSchema).fk!.table = value as string;
           break;
         case 'pk':
         case 'nn':
         case 'uq':
-          column[attr] = value === 'checked';
+          column[attr] = value as boolean;
           break;
         case 'type':
-          (column as IColumnNoneFkSchema)[attr] = value;
-          break;
-        default:
-          column[attr] = value;
+          (column as IColumnNoneFkSchema)[attr] = value as string;
           break;
       }
     });
@@ -143,32 +145,16 @@ const TableDialog: React.FC = () => {
   return (
     <Dialog>
       <h3>{title}</h3>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form>
         <div>
           <label>
             Name:
-            <input
-              name='name'
-              type='text'
-              onChange={onChangeTableName}
-              ref={register({
-                required: 'Name is required',
-                validate: (value: string) =>
-                  tables.findIndex((tableItem) => tableItem.name === value) ===
-                  -1,
-              })}
-            />
+            <input name='name' type='text' onChange={onChangeTableName} />
           </label>
-          <ErrorMessage
-            errors={errors}
-            name='name'
-            as={<div className={classes.error} />}
-          />
         </div>
         <Columns
           {...{
             addColumn,
-            register,
             tables,
             onColChange,
           }}
@@ -176,7 +162,6 @@ const TableDialog: React.FC = () => {
         <FkColumns
           {...{
             addFkColumn,
-            register,
             tables,
             onColChange,
           }}
