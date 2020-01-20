@@ -25,12 +25,14 @@ const FkColumns: React.FC<IProps> = ({
   const tableStyle = useTableStyles().table;
   const currentTable = tables[tables.length - 1];
 
-  const getRefColumns = (colIndex: number) => {
-    let tableName = (currentTable.columns[colIndex] as IColumnFkSchema).fk!
+  const getFkColumnOptions = (colIndex: number) => {
+    const fkTableName = (currentTable.columns[colIndex] as IColumnFkSchema).fk!
       .table;
-    if (tableName === '') tableName = tables[0].name;
-    const selectedTable = tables.find((table) => tableName === table.name);
-    return filterPkUq(selectedTable!);
+    if (fkTableName !== '') {
+      const selectedTable = tables.find((table) => fkTableName === table.name);
+      return filterPkUq(selectedTable!);
+    }
+    return [];
   };
 
   const onColChangeLocal = (attr: ColAtrs, colIndex: number) => (
@@ -86,6 +88,7 @@ const FkColumns: React.FC<IProps> = ({
                 onChange={onColChangeLocal('fkTable', index)}
                 value={(column as IColumnFkSchema).fk!.table}
               >
+                <option />
                 {tables.map(({ name }) => (
                   <option key={name} value={name}>
                     {name}
@@ -99,7 +102,8 @@ const FkColumns: React.FC<IProps> = ({
                 onChange={onColChangeLocal('fkColumn', index)}
                 value={(column as IColumnFkSchema).fk!.column}
               >
-                {getRefColumns(index).map(({ name }, refColumnIndex) => (
+                <option />
+                {getFkColumnOptions(index).map(({ name }, refColumnIndex) => (
                   <option key={refColumnIndex} value={name}>
                     {name}
                   </option>
